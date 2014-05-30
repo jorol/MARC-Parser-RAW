@@ -1,6 +1,6 @@
 package MARC::Parser::RAW;
 
-# ABSTRACT: MARC RAW format parser
+# ABSTRACT: Parser for ISO 2709 encoded MARC records
 # VERSION
 
 use strict;
@@ -27,12 +27,12 @@ Readonly my $END_OF_RECORD      => qq{\N{INFORMATION SEPARATOR THREE}};
 
 =head1 DESCRIPTION
 
-L<MARC::Parser::RAW> is a lightweight, fault tolerent parser for raw MARC 
-records. Tags, indicators and subfield codes are not validated against the 
-MARC standard. Record length from leader and field lengths from the directory 
-are ignored. Records with a faulty structure will be skipped with a warning. 
-The resulting data structure is optimized for usage with the L<Catmandu> data 
-tool kit.    
+L<MARC::Parser::RAW> is a lightweight, fault tolerent parser for ISO 2709 
+encoded MARC records. Tags, indicators and subfield codes are not validated 
+against the MARC standard. Record length from leader and field lengths from 
+the directory are ignored. Records with a faulty structure will be skipped 
+with a warning. The resulting data structure is optimized for usage with the 
+L<Catmandu> data tool kit.    
 
 L<MARC::Parser::RAW> expects UTF-8 encoded files as input. Otherwise provide a 
 filehande with a specified I/O layer or specify encoding.
@@ -201,7 +201,7 @@ sub _field {
 
 L<Catmandu>, L<Catmandu::Importer::MARC>.
 
-=head1 Acknowledgement
+=head1 ACKNOWLEDGEMENT
 
 The parser methods are adapted from Marc Chantreux's L<MARC::MIR> module.
 
