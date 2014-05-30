@@ -68,7 +68,7 @@ Path to file with raw MARC records.
 
 Open filehandle for raw MARC records.
 
-=item C<fh>
+=item C<encoding>
 
 Set encoding. Default: UTF-8. Optional.
 
