@@ -72,6 +72,19 @@ Deserialize a raw MARC record to an ARRAY of ARRAYs.
 
 Split MARC field string in individual components.
 
+# AUTHOR
+
+Johann Rolschewski <jorol@cpan.org>
+
+# COPYRIGHT
+
+Copyright 2014- Johann Rolschewski
+
+# LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
 # SEEALSO
 
 [Catmandu](https://metacpan.org/pod/Catmandu), [Catmandu::Importer::MARC](https://metacpan.org/pod/Catmandu::Importer::MARC).

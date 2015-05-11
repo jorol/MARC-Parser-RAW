@@ -7,6 +7,7 @@ use warnings;
 use charnames qw< :full >;
 use Carp qw(croak carp);
 use Encode qw(find_encoding);
+use English;
 use Readonly;
 
 Readonly my $LEADER_LEN         => 24;
@@ -93,8 +94,7 @@ sub new {
     $file or croak "first argument must be a file or filehandle";
 
     if ($encoding) {
-        find_encoding($encoding)
-            or croak "encoding \"$_[0]\" is not a valid encoding";
+        find_encoding($encoding) or croak "encoding \"$_[0]\" not found";
     }
 
     my $self = {
@@ -130,25 +130,24 @@ Reads the next record from MARC input stream. Returns a Perl hash.
 sub next {
     my $self = shift;
     my $fh   = $self->{fh};
-    local $/ = $END_OF_RECORD;
-    if ( my $record = <$fh> ) {
+    local $INPUT_RECORD_SEPARATOR = $END_OF_RECORD;
+    if ( defined (my $raw = <$fh>) ) {
         $self->{rec_number}++;
 
         # remove illegal garbage that sometimes occurs between records
-        $record
+        $raw
             =~ s/^[\N{SPACE}\N{NUL}\N{LINE FEED}\N{CARRIAGE RETURN}\N{SUB}]+//;
-        return unless $record;
+        return unless $raw;
 
-        my $record = _decode($record);
-        if ( scalar @{$record} > 1 ) {
-            return $record;
+
+        if ( my $marc = $self->_decode($raw) ) {
+            return $marc;
         }
-        carp $record->[0] . $self->{rec_number};
-        $self->next();
+        else {
+            return $self->next();
+        }
     }
-    else {
-        return;
-    }
+    return;
 }
 
 =head2 _decode($record)
@@ -158,34 +157,41 @@ Deserialize a raw MARC record to an ARRAY of ARRAYs.
 =cut
 
 sub _decode {
-    my $raw = shift;
+    my ( $self, $raw ) = @_;
     chop $raw;
     my ( $head, @fields ) = split $END_OF_FIELD, $raw;
 
     if ( !@fields ) {
-        return ["no fields found in record "];
+        carp "no fields found in record " . $self->{rec_number};
+        return;
     }
 
     # ToDO: better RegEX for leader
-    if ( $head !~ /(.{$LEADER_LEN})/cg ) {
-        return ["no record leader found in record "];
+    my $leader;
+    if ( $head =~ /(.{$LEADER_LEN})/cg ) {
+        $leader = $1;
+    }
+    else {
+        carp "no valid record leader found in record " . $self->{rec_number};
+        return;
     }
 
-    my $leader = $1;
-    my @tags   = $head =~ /\G(\d{3})\d{9}/cg;
+    my @tags = $head =~ /\G(\d{3})\d{9}/cg;
 
     if ( scalar @tags != scalar @fields ) {
-        return ["different number of tags and fields in record "];
+        carp "different number of tags and fields in record "
+            . $self->{rec_number};
+        return;
     }
 
     if ( $head !~ /\G$/cg ) {
-        my $tail = $1 if $head =~ /(.*)/cg;
-        return ["incomplete directory entry in record "];
+        carp "incomplete directory entry in record " . $self->{rec_number};
+        return;
     }
 
     return [
         [ 'LDR', undef, undef, '_', $leader ],
-        map [ shift(@tags), _field($_) ],
+        map [ shift(@tags), $self->_field($_) ],
         @fields
     ];
 }
@@ -197,7 +203,7 @@ Split MARC field string in individual components.
 =cut
 
 sub _field {
-    my ($field) = @_;
+    my ( $self, $field ) = @_;
     my @chunks = split( /$SUBFIELD_INDICATOR(.)/, $field );
     return ( undef, undef, '_', @chunks ) if @chunks == 1;
     my @subfields;
@@ -207,6 +213,19 @@ sub _field {
     }
     return ( $indicator1, $indicator2, @subfields );
 }
+
+=head1 AUTHOR
+
+Johann Rolschewski E<lt>jorol@cpan.orgE<gt>
+
+=head1 COPYRIGHT
+
+Copyright 2014- Johann Rolschewski
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =head1 SEEALSO
 
