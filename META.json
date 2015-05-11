@@ -38,7 +38,13 @@
       "runtime" : {
          "requires" : {
             "Encode" : "2.5",
-            "Readonly" : "1.0"
+            "Readonly" : "1.0",
+            "perl" : "5.012005"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.96"
          }
       }
    },
