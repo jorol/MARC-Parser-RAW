@@ -1,37 +1,81 @@
-MARC-Parser-RAW - Parser for raw MARC data. Optimized for [Catmandu](https://metacpan.org/module/Catmandu).
+# NAME
 
-# Installation
-
-Install the latest distribution from CPAN:
-
-    cpanm MARC-Parser-RAW
-
-Install the latest developer version from GitHub:
-
-    cpanm git@github.com:jorol/MARC-Parser-RAW.git@devel
-
-# Contribution
-
-For bug reports and feature requests use <https://github.com/jorol/MARC-Parser-RAW/issues>.
-
-For contributions to the source code create a fork or use the `devel` branch. The master
-branch should only contain merged and stashed changes to appear in Changelog.
-
-Dist::Zilla and build requirements can be installed this way:
-
-    cpan Dist::Zilla
-    dzil authordeps | cpanm
-
-Build and test your current state this way:
-
-    dzil build
-    dzil test 
-    dzil smoke --release --author # test more
-
-# Status
-
-Build and test coverage of the `devel` branch at <https://github.com/jorol/MARC-Parser-RAW/>:
+MARC::Parser::RAW - Parser for ISO 2709 encoded MARC records
 
 [![Build Status](https://travis-ci.org/jorol/MARC-Parser-RAW.png)](https://travis-ci.org/jorol/MARC-Parser-RAW)
 [![Coverage Status](https://coveralls.io/repos/jorol/MARC-Parser-RAW/badge.png?branch=devel)](https://coveralls.io/r/jorol/MARC-Parser-RAW?branch=devel)
 [![Kwalitee Score](http://cpants.cpanauthors.org/dist/MARC-Parser-RAW.png)](http://cpants.cpanauthors.org/dist/MARC-Parser-RAW)
+
+# SYNOPSIS
+
+    use MARC::Parser::RAW;
+
+    my $parser = MARC::Parser::RAW->new( $file );
+
+    while ( my $record = $parser->next() ) {
+        # do something        
+    }
+
+# DESCRIPTION
+
+[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) is a lightweight, fault tolerent parser for ISO 2709 
+encoded MARC records. Tags, indicators and subfield codes are not validated 
+against the MARC standard. Record length from leader and field lengths from 
+the directory are ignored. Records with a faulty structure will be skipped 
+with a warning. The resulting data structure is optimized for usage with the 
+[Catmandu](https://metacpan.org/pod/Catmandu) data tool kit.    
+
+[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) expects UTF-8 encoded files as input. Otherwise provide a 
+filehande with a specified I/O layer or specify encoding.
+
+# MARC
+
+The MARC record is parsed into an ARRAY of ARRAYs:
+
+    $record = [
+            [ 'LDR', undef, undef, '_', '00661nam  22002538a 4500' ],
+            [ '001', undef, undef, '_', 'fol05865967 ' ],
+            ...
+            [   '245', '1', '0', 'a', 'Programming Perl /',
+                'c', 'Larry Wall, Tom Christiansen & Jon Orwant.'
+            ],
+            ...
+        ];
+
+# METHODS
+
+## new($file|$fh \[, $encoding\])
+
+# Configuration
+
+- `file`
+
+    Path to file with raw MARC records.
+
+- `fh`
+
+    Open filehandle for raw MARC records.
+
+- `encoding`
+
+    Set encoding. Default: UTF-8. Optional.
+
+## next()
+
+Reads the next record from MARC input stream. Returns a Perl hash.
+
+## \_decode($record)
+
+Deserialize a raw MARC record to an ARRAY of ARRAYs.
+
+## \_field($field)
+
+Split MARC field string in individual components.
+
+# SEEALSO
+
+[Catmandu](https://metacpan.org/pod/Catmandu), [Catmandu::Importer::MARC](https://metacpan.org/pod/Catmandu::Importer::MARC).
+
+# ACKNOWLEDGEMENT
+
+The parser methods are adapted from Marc Chantreux's [MARC::MIR](https://metacpan.org/pod/MARC::MIR) module.

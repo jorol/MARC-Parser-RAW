@@ -1,7 +1,6 @@
 package MARC::Parser::RAW;
 
-# ABSTRACT: Parser for ISO 2709 encoded MARC records
-# VERSION
+our $VERSION = "0.01";
 
 use strict;
 use warnings;
@@ -14,6 +13,18 @@ Readonly my $LEADER_LEN         => 24;
 Readonly my $SUBFIELD_INDICATOR => qq{\N{INFORMATION SEPARATOR ONE}};
 Readonly my $END_OF_FIELD       => qq{\N{INFORMATION SEPARATOR TWO}};
 Readonly my $END_OF_RECORD      => qq{\N{INFORMATION SEPARATOR THREE}};
+
+=head1 NAME
+
+MARC::Parser::RAW - Parser for ISO 2709 encoded MARC records
+
+=begin markdown
+
+[![Build Status](https://travis-ci.org/jorol/MARC-Parser-RAW.png)](https://travis-ci.org/jorol/MARC-Parser-RAW)
+[![Coverage Status](https://coveralls.io/repos/jorol/MARC-Parser-RAW/badge.png?branch=devel)](https://coveralls.io/r/jorol/MARC-Parser-RAW?branch=devel)
+[![Kwalitee Score](http://cpants.cpanauthors.org/dist/MARC-Parser-RAW.png)](http://cpants.cpanauthors.org/dist/MARC-Parser-RAW)
+
+=end markdown
 
 =head1 SYNOPSIS
 
