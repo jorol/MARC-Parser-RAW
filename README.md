@@ -46,7 +46,7 @@ The MARC record is parsed into an ARRAY of ARRAYs:
 
 ## new($file|$fh \[, $encoding\])
 
-# Configuration
+### Configuration
 
 - `file`
 

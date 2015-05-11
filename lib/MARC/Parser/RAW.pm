@@ -68,7 +68,7 @@ The MARC record is parsed into an ARRAY of ARRAYs:
 
 =head2 new($file|$fh [, $encoding])
 
-=head1 Configuration
+=head3 Configuration
 
 =over
 
