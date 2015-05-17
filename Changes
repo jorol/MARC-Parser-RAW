@@ -2,6 +2,14 @@ Changelog for MARC-Parser-RAW
 
 {{$NEXT}}
 
+0.02  2015-05-17 12:59:25 CEST
+ - requires perl 5.12.5
+ - edit cpanfile
+ - minor POD edit
+ - major refactoring
+ - switch to Dist-Milla
+ - edit .travis.yml
+
 0.01 2014-05-28
  - initial commit 
  
