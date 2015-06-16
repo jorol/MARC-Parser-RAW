@@ -18,15 +18,15 @@ MARC::Parser::RAW - Parser for ISO 2709 encoded MARC records
 
 # DESCRIPTION
 
-[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) is a lightweight, fault tolerent parser for ISO 2709 
+[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) is a lightweight, fault tolerant parser for ISO 2709 
 encoded MARC records. Tags, indicators and subfield codes are not validated 
 against the MARC standard. Record length from leader and field lengths from 
 the directory are ignored. Records with a faulty structure will be skipped 
 with a warning. The resulting data structure is optimized for usage with the 
 [Catmandu](https://metacpan.org/pod/Catmandu) data tool kit.    
 
-[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) expects UTF-8 encoded files as input. Otherwise provide a 
-filehande with a specified I/O layer or specify encoding.
+[MARC::Parser::RAW](https://metacpan.org/pod/MARC::Parser::RAW) expects UTF-8 encoded files as input. Otherwise provide 
+a filehande with a specified I/O layer or specify encoding.
 
 # MARC
 

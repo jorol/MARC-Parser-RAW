@@ -1,6 +1,8 @@
 Changelog for MARC-Parser-RAW
 
 {{$NEXT}}
+ - edit cpanfile
+ - fix typo in POD
 
 0.02  2015-05-17 12:59:25 CEST
  - requires perl 5.12.5

@@ -37,9 +37,7 @@
       },
       "runtime" : {
          "requires" : {
-            "Encode" : "2.5",
-            "Readonly" : "1.0",
-            "perl" : "5.012005"
+            "Readonly" : "1.0"
          }
       },
       "test" : {
