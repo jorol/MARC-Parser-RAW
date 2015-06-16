@@ -1,6 +1,8 @@
 Changelog for MARC-Parser-RAW
 
 {{$NEXT}}
+
+0.03  2015-06-16 18:12:52 CEST
  - edit cpanfile
  - fix typo in POD
 
