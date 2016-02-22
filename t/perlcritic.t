@@ -12,6 +12,7 @@
     # Temporarily skip any files that existed before adding the tests.
     # Eventually these should all be removed (once the files are cleaned up).
     my %skip = map { ( $_ => 1 ) } qw(
+        t/author-pod-syntax.t
     );
 
     my @files = grep { !$skip{$_} }

@@ -74,7 +74,7 @@ Split MARC field string in individual components.
 
 # AUTHOR
 
-Johann Rolschewski <jorol@cpan.org>
+Johann Rolschewski &lt;jorol@cpan.org>
 
 # COPYRIGHT
 

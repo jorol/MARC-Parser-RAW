@@ -4,7 +4,7 @@
       "Johann Rolschewski <jorol@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.036, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150001",
+   "generated_by" : "Dist::Zilla version 5.041, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -15,18 +15,18 @@
    "name" : "MARC-Parser-RAW",
    "no_index" : {
       "directory" : [
-         "t",
-         "xt",
+         "eg",
+         "examples",
          "inc",
          "share",
-         "eg",
-         "examples"
+         "t",
+         "xt"
       ]
    },
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build::Tiny" : "0.039"
+            "Module::Build::Tiny" : "0.034"
          }
       },
       "develop" : {
@@ -42,7 +42,10 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.96"
+            "Perl::Tidy" : "0",
+            "Test::Code::TidyAll" : "0",
+            "Test::More" : "0.96",
+            "Test::Perl::Critic" : "0"
          }
       }
    },
