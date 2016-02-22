@@ -1,9 +1,11 @@
 package MARC::Parser::RAW;
 
-our $VERSION = "0.03";
-
 use strict;
 use warnings;
+use utf8;
+
+our $VERSION = "0.03";
+
 use charnames qw< :full >;
 use Carp qw(croak carp);
 use Encode qw(find_encoding);
@@ -131,14 +133,13 @@ sub next {
     my $self = shift;
     my $fh   = $self->{fh};
     local $INPUT_RECORD_SEPARATOR = $END_OF_RECORD;
-    if ( defined (my $raw = <$fh>) ) {
+    if ( defined( my $raw = <$fh> ) ) {
         $self->{rec_number}++;
 
         # remove illegal garbage that sometimes occurs between records
         $raw
             =~ s/^[\N{SPACE}\N{NUL}\N{LINE FEED}\N{CARRIAGE RETURN}\N{SUB}]+//;
         return unless $raw;
-
 
         if ( my $marc = $self->_decode($raw) ) {
             return $marc;
