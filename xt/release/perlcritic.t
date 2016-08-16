@@ -1,25 +1,26 @@
-    use strict;
-    use warnings;
-    use Test::More;
+use strict;
+use warnings;
 
-    ## no critic
-    eval 'use Test::Perl::Critic 1.02';
-    plan skip_all => 'Test::Perl::Critic 1.02 required' if $@;
+use Test::More;
 
-    # NOTE: New files will be tested automatically.
+## no critic
+eval 'use Test::Perl::Critic 1.02';
+plan skip_all => 'Test::Perl::Critic 1.02 required' if $@;
 
-    # FIXME: Things should be removed (not added) to this list.
-    # Temporarily skip any files that existed before adding the tests.
-    # Eventually these should all be removed (once the files are cleaned up).
-    my %skip = map { ( $_ => 1 ) } qw(
-        t/author-pod-syntax.t
-    );
+# NOTE: New files will be tested automatically.
 
-    my @files = grep { !$skip{$_} }
-        ( Perl::Critic::Utils::all_perl_files(qw( bin lib t )) );
+# FIXME: Things should be removed (not added) to this list.
+# Temporarily skip any files that existed before adding the tests.
+# Eventually these should all be removed (once the files are cleaned up).
+my %skip = map { ( $_ => 1 ) } qw(
+    t/author-pod-syntax.t
+);
 
-    foreach my $file (@files) {
-        critic_ok( $file, $file );
-    }
+my @files = grep { !$skip{$_} }
+    ( Perl::Critic::Utils::all_perl_files(qw( bin lib t )) );
 
-    done_testing();
+foreach my $file (@files) {
+    critic_ok( $file, $file );
+}
+
+done_testing();
