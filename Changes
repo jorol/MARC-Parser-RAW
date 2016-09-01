@@ -2,6 +2,11 @@ Changelog for MARC-Parser-RAW
 
 {{$NEXT}}
 
+0.04  2016-09-01 09:45:13 CEST
+ - support for scalar references with MARC data 
+ - tidy
+ - use Perl::Tidy and Perl::Critic
+
 0.03  2015-06-16 18:12:52 CEST
  - edit cpanfile
  - fix typo in POD
