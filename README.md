@@ -44,7 +44,7 @@ The MARC record is parsed into an ARRAY of ARRAYs:
 
 # METHODS
 
-## new($file|$fh \[, $encoding\])
+## new($file|$fh|$scalarref \[, $encoding\])
 
 ### Configuration
 
@@ -55,6 +55,10 @@ The MARC record is parsed into an ARRAY of ARRAYs:
 - `fh`
 
     Open filehandle for raw MARC records.
+
+- `scalarref`
+
+    Reference to scalar with raw MARC records.
 
 - `encoding`
 
@@ -74,7 +78,7 @@ Split MARC field string in individual components.
 
 # AUTHOR
 
-Johann Rolschewski &lt;jorol@cpan.org>
+Johann Rolschewski <jorol@cpan.org>
 
 # COPYRIGHT
 
