@@ -1,0 +1,8 @@
+-pbp
+-nst
+--indent-columns=4
+--maximum-line-length=78
+
+# Break a line after opening/before closing token.
+-vt=0
+-vtc=0

@@ -1,9 +1,11 @@
 package MARC::Parser::RAW;
 
-our $VERSION = "0.04";
-
 use strict;
 use warnings;
+use utf8;
+
+our $VERSION = "0.04";
+
 use charnames qw< :full >;
 use Carp qw(croak carp);
 use Encode qw(find_encoding);
@@ -66,7 +68,7 @@ The MARC record is parsed into an ARRAY of ARRAYs:
 
 =head1 METHODS
 
-=head2 new($file|$fh [, $encoding])
+=head2 new($file|$fh|$scalarref [, $encoding])
 
 =head3 Configuration
 
@@ -79,6 +81,10 @@ Path to file with raw MARC records.
 =item C<fh>
 
 Open filehandle for raw MARC records.
+
+=item C<scalarref>
+
+Reference to scalar with raw MARC records.
 
 =item C<encoding>
 
@@ -105,12 +111,13 @@ sub new {
     };
 
     # check for file or filehandle
+    # ToDo: check for scalar ref
     my $ishandle = eval { fileno($file); };
     if ( !$@ && defined $ishandle ) {
         $self->{file} = scalar $file;
         $self->{fh}   = $file;
     }
-    elsif ( -e $file ) {
+    elsif ( -e $file || ref($file) eq 'SCALAR' ) {
         open $self->{fh}, "<:encoding($self->{encoding})", $file
             or croak "cannot read from file $file\n";
         $self->{file} = $file;
@@ -131,14 +138,13 @@ sub next {
     my $self = shift;
     my $fh   = $self->{fh};
     local $INPUT_RECORD_SEPARATOR = $END_OF_RECORD;
-    if ( defined (my $raw = <$fh>) ) {
+    if ( defined( my $raw = <$fh> ) ) {
         $self->{rec_number}++;
 
         # remove illegal garbage that sometimes occurs between records
         $raw
             =~ s/^[\N{SPACE}\N{NUL}\N{LINE FEED}\N{CARRIAGE RETURN}\N{SUB}]+//;
         return unless $raw;
-
 
         if ( my $marc = $self->_decode($raw) ) {
             return $marc;
