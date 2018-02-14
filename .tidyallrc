@@ -7,8 +7,6 @@ argv = --profile=$ROOT/.perltidyrc
 [PerlCritic]
 select = lib/**/*.pm
 argv = --profile $ROOT/.perlcriticrc
-ignore = t/author-*
-ignore = t/release-*
 
 [SortLines]
 select = .gitignore
