@@ -35,23 +35,25 @@ jobs:
     - uses: actions/checkout@v2
     - run: env | sort
     - run: perl -V
-    - run: cpanm -n --installdeps .
+    - run: cpanm -n Perl::Tidy Test::Code::TidyAll Test::Perl::Critic
+    - run: cpanm -n -q --skip-satisfied Dist::Zilla
+    - run: dzil authordeps | grep -vP '[^\w:]' | xargs -n 5 -P 10 cpanm -n -q --skip-satisfied
+    - run: dzil listdeps | grep -vP '[^\w:]' | cpanm -n -v
     - name: Run release tests
       if: ${{ matrix.release-test }}
       env:
         RELEASE_TESTING: 1
         AUTOMATED_TESTING: 1 
         AUTHOR_TESTING: 1
-      run: |
-        cpanm -n --installdeps --with-develop .
-        prove -lr xt
+      run: dzil smoke --release --author
     - name: Run tests (no coverage)
       if: ${{ !matrix.coverage }}
-      run: prove -l t
+      run: dzil smoke --release --author
     - name: Run tests (with coverage)
       if: ${{ matrix.coverage }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        cpanm -n Devel::Cover::Report::Coveralls
-        cover -test -report Coveralls
+        cpanm -n -q --skip-satisfied Devel::Cover::Report::Coveralls
+        cpanm -n -q --skip-satisfied Dist::Zilla::App::Command::cover
+        dzil cover -outputdir cover_db -report coveralls
