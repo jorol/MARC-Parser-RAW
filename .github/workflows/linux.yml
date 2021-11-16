@@ -36,24 +36,23 @@ jobs:
     - run: env | sort
     - run: perl -V
     - run: cpanm -n Perl::Tidy Test::Code::TidyAll Test::Perl::Critic
-    - run: cpanm -n -q --skip-satisfied Dist::Zilla
-    - run: dzil authordeps | grep -vP '[^\w:]' | xargs -n 5 -P 10 cpanm -n -q --skip-satisfied
-    - run: dzil listdeps | grep -vP '[^\w:]' | cpanm -n -v
+    - run: cpanm -n --installdeps .
     - name: Run release tests
       if: ${{ matrix.release-test }}
       env:
         RELEASE_TESTING: 1
         AUTOMATED_TESTING: 1 
         AUTHOR_TESTING: 1
-      run: dzil smoke --release --author
+      run: |
+        cpanm -n --installdeps --with-develop .
+        prove -lr xt
     - name: Run tests (no coverage)
       if: ${{ !matrix.coverage }}
-      run: dzil smoke --release --author
+      run: prove -l t
     - name: Run tests (with coverage)
       if: ${{ matrix.coverage }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        cpanm -n -q --skip-satisfied Devel::Cover::Report::Coveralls
-        cpanm -n -q --skip-satisfied Dist::Zilla::App::Command::cover
-        dzil cover -outputdir cover_db -report coveralls
+        cpanm -n Devel::Cover::Report::Coveralls
+        perl Build.PL && ./Build build && cover -test -report coveralls
