@@ -35,20 +35,16 @@ jobs:
     - uses: actions/checkout@v2
     - run: env | sort
     - run: perl -V
-    - run: cpanm -n Perl::Tidy Test::Code::TidyAll Test::Perl::Critic
     - run: cpanm -n --installdeps .
     - name: Run release tests
       if: ${{ matrix.release-test }}
-      env:
-        RELEASE_TESTING: 1
-        AUTOMATED_TESTING: 1 
-        AUTHOR_TESTING: 1
       run: |
+        cpanm -n Perl::Tidy Test::Code::TidyAll Test::Perl::Critic
         cpanm -n --installdeps --with-develop .
         prove -lr xt
     - name: Run tests (no coverage)
       if: ${{ !matrix.coverage }}
-      run: prove -l t
+      run: prove -lr t
     - name: Run tests (with coverage)
       if: ${{ matrix.coverage }}
       env:
